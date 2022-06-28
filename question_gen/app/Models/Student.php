@@ -13,4 +13,17 @@ class Student extends Authenticatable
 {
     use LaratrustUserTrait;
     use HasFactory,HasApiTokens,Notifiable;
+    protected $table='student';
+    protected $fillable = [
+        'firstname',
+        'lastname',
+        'username',
+        'email',
+        'password',
+        'phone',
+        'image',
+        'address',
+        'class',
+    ];
+
 }

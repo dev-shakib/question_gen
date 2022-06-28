@@ -13,4 +13,10 @@ class Admin extends Authenticatable
 {
     use LaratrustUserTrait;
     use HasFactory,HasApiTokens,Notifiable;
+    protected $table = 'admin';
+    protected $fillable = ['name','username','password'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 }
