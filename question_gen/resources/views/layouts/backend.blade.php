@@ -31,7 +31,7 @@
        <!-- Styles -->
        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   </head>
-  <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse" id="app">
+  <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse" id="AdminApp">
 
     <!-- ./wrapper -->
     <!-- jQuery -->
@@ -40,7 +40,7 @@
     <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
-      $.widget.bridge('uibutton', $.ui.button)
+    //   $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

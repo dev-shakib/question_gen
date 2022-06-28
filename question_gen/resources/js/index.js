@@ -5,7 +5,7 @@ import GenerateQuestion from './components/GenerateQuestion';
 import QuestionList from './components/QuestionList';
 import CustomQuestion from './components/CustomQuestion';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-if (document.getElementById('app')) {
+if (document.getElementById('AdminApp')) {
     ReactDOM.render(<BrowserRouter>
         <Routes>
          <Route exact path="/home" element={<Dashboard />} />
@@ -13,5 +13,5 @@ if (document.getElementById('app')) {
          <Route exact  path="/question-list" element={<QuestionList />} />
          <Route exact  path="/custom-question" element={<CustomQuestion />} />
        </Routes>
-       </BrowserRouter>, document.getElementById('app'));
+       </BrowserRouter>, document.getElementById('AdminApp'));
 }

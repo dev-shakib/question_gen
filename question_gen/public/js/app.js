@@ -6143,7 +6143,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-if (document.getElementById('app')) {
+if (document.getElementById('AdminApp')) {
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.BrowserRouter, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Routes, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
@@ -6164,7 +6164,7 @@ if (document.getElementById('app')) {
         element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_components_CustomQuestion__WEBPACK_IMPORTED_MODULE_5__["default"], {})
       })]
     })
-  }), document.getElementById('app'));
+  }), document.getElementById('AdminApp'));
 }
 
 /***/ }),
