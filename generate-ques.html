@@ -95,7 +95,7 @@
         
 
           <li class="nav-item">
-            <a href="./index.html" class="nav-link">
+            <a href="./add-ques.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>Add Question</p>
             </a>
@@ -214,18 +214,18 @@
           <!-- /.col (right) -->
 
           <div class="col-md-8">
-            <div class="card card-primary" id="question_preview">
+            <div class="card card-primary">
               <div class="card-header">
                 <div class="row justify-content-between">
                   <div class="col-sm-2">
                     <button type="button" class="btn btn-block btn-dark">Download</button>
                   </div>
                   <div class="col-sm-2">
-                    <button type="button" class="btn btn-block btn-dark">View</button>
+                    <button type="button" class="btn btn-block btn-dark" id="print_btn">View</button>
                   </div>
                 </div>
               </div>
-              <div class="card-body">
+              <div class="card-body" id="question_preview">
                 
                 <!-- preview heading -->
                 <div class="row">
@@ -475,6 +475,8 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- print -->
+<script src="./dist/js/jQuery.print.min.js"></script>
 <!-- ChartJS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
@@ -501,6 +503,19 @@
 <script src="dist/js/pages/dashboard.js"></script>
 
 
+<script>
+  $('#print_btn').click(function(){
+    $("#question_preview").print({
+      addGlobalStyles : true,
+      stylesheet : null,
+      rejectWindow : true,
+      noPrintSelector : ".no-print",
+      iframe : true,
+      append : null,
+      prepend : null
+  });
+  });
+</script>
 
 
 </body>
