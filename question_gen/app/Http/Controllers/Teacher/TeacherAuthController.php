@@ -35,16 +35,27 @@ class TeacherAuthController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-        if(User::where(['status'=>1,'username'=>$request->username])->count() == 0)
-        {
-            return response()->json([
-                'success' => false,
-                'message' => 'Teacher Currently Not Approved'
-            ]);
-        }
 
-        // authentication attempt
-        if (auth()->guard('teacher')->attempt($input)) {
+        if(filter_var($request->username, FILTER_VALIDATE_EMAIL)) {
+            if(User::where(['status'=>1,'email'=>$request->username])->count() == 0)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Teacher Currently Not Approved'
+                ]);
+            }
+            Auth::guard('teacher')->attempt(['email' => $request->username, 'password' => $request->password]);
+        } else {
+            if(User::where(['status'=>1,'username'=>$request->username])->count() == 0)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Teacher Currently Not Approved'
+                ]);
+            }
+            Auth::guard('teacher')->attempt(['username' => $request->username, 'password' => $request->password]);
+        }
+        if (Auth::guard('teacher')->check()) {
 
             $token = auth()->guard('teacher')->user()->createToken('passport_token')->accessToken;
 

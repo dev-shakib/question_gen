@@ -35,16 +35,27 @@ class StudentAuthController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-        if(Student::where(['status'=>1,'username'=>$request->username])->count() == 0)
-        {
-            return response()->json([
-                'success' => false,
-                'message' => 'Student Currently Not Approved'
-            ]);
+        if(filter_var($request->username, FILTER_VALIDATE_EMAIL)) {
+            if(Student::where(['status'=>1,'email'=>$request->username])->count() == 0)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Student Currently Not Approved'
+                ]);
+            }
+            Auth::guard('student')->attempt(['email' => $request->username, 'password' => $request->password]);
+        } else {
+            if(Student::where(['status'=>1,'username'=>$request->username])->count() == 0)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Student Currently Not Approved'
+                ]);
+            }
+            Auth::guard('student')->attempt(['username' => $request->username, 'password' => $request->password]);
         }
-
         // authentication attempt
-        if (auth()->guard('student')->attempt($input)) {
+        if (Auth::guard('student')->check()) {
 
             $token = auth()->guard('student')->user()->createToken('passport_token')->accessToken;
 
