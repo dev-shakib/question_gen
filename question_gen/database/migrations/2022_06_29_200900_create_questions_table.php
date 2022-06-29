@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('ques_type');
             $table->text('question');
             $table->text('subject');
-            $table->text('status');
+            $table->boolean('status');
             $table->unsignedBigInteger('class');
             $table->foreign('class')->references('id')->on('class');
             $table->unsignedBigInteger('institute');
