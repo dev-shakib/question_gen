@@ -9,5 +9,10 @@ class Institute extends Model
 {
     use HasFactory;
     protected $table = 'institute';
-    protected $fillable = ['name','eiin'];
+    protected $fillable = ['name'];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'eiin'
+    ];
 }

@@ -10,4 +10,9 @@ class Subject extends Model
     use HasFactory;
     protected $table = 'subject';
     protected $fillable = ['name'];
+    protected $hidden = [
+        'code',
+        'created_at',
+        'updated_at',
+    ];
 }

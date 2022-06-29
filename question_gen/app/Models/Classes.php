@@ -10,4 +10,8 @@ class Classes extends Model
     use HasFactory;
     protected $table = 'class';
     protected $fillable = ['name'];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }

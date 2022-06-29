@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Board;
-use App\Models\BoardYear;
+use App\Models\QuestionYear;
 use App\Models\Status;
 use Exception;
 use App\Http\Requests\BoardRequest;
@@ -74,14 +74,14 @@ class BoardController extends Controller
 
         }
     }
-    public function boardYearAll()
+    public function questionYearAll()
     {
         return response()->json([
             'status'=>200,
-            'data'=>BoardYear::get()
+            'data'=>QuestionYear::get()
         ]);
     }
-    public function boardYearCreate(BoardYearRequest $request)
+    public function questionYearCreate(BoardYearRequest $request)
     {
         try{
             $validated = $request->validated();
@@ -90,7 +90,7 @@ class BoardController extends Controller
             return response()->json([
                 'status'=>200,
                 'message'=>'created',
-                'data'=> BoardYear::create($validated)
+                'data'=> QuestionYear::create($validated)
             ]);
 
         }catch(Exception $e)
@@ -101,18 +101,18 @@ class BoardController extends Controller
             ]);
         }
     }
-    public function boardYearShow($id)
+    public function questionYearShow($id)
     {
-        $board = BoardYear::where('id',$id)->first();
+        $board = QuestionYear::where('id',$id)->first();
         return response()->json([
             'status'=> 200,
             'data' =>$board
         ]);
     }
-    public function boardYearUpdate($id, BoardYearRequest $request){
+    public function questionYearUpdate($id, BoardYearRequest $request){
         $validated = $request->validated();
-        $board = BoardYear::where("id",$id)->update($validated);
-        $board =  BoardYear::where("id",$id)->first();
+        $board = QuestionYear::where("id",$id)->update($validated);
+        $board =  QuestionYear::where("id",$id)->first();
         return response()->json([
             'status'=> 200,
             'message'=>'updated',
@@ -120,7 +120,7 @@ class BoardController extends Controller
         ]);
     }
     public function boardYearDelete($id){
-        $board = BoardYear::where('id',$id);
+        $board = QuestionYear::where('id',$id);
         if($board->count() > 0){
             $board = $board->delete();
             return response()->json([

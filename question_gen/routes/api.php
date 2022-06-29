@@ -9,6 +9,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Teacher\TeacherAuthController;
 use App\Http\Controllers\Student\StudentAuthController;
@@ -59,11 +60,11 @@ Route::prefix('admin')->group(function () {
         Route::post('permission/{id}', [PermissionController::class,'update']);
         // Permission Route
         // Board Year
-        Route::get('board-year',  [BoardController::class,'boardYearAll']);
-        Route::post('board-year', [BoardController::class,'boardYearCreate']);
-        Route::post('board-year/{id}', [BoardController::class,'boardYearUpdate']);
-        Route::get('board-year/{id}', [BoardController::class,'boardYearShow']);
-        Route::delete('board-year/{id}', [BoardController::class,'boardYearDelete']);
+        Route::get('question-year',  [BoardController::class,'questionYearAll']);
+        Route::post('question-year', [BoardController::class,'questionYearCreate']);
+        Route::post('question-year/{id}', [BoardController::class,'questionYearUpdate']);
+        Route::get('question-year/{id}', [BoardController::class,'questionYearShow']);
+        Route::delete('question-year/{id}', [BoardController::class,'questionYearDelete']);
         // Board Year
         // Status
         Route::get('status',  [BoardController::class,'statusAll']);
@@ -81,7 +82,8 @@ Route::prefix('teacher')->group(function () {
     Route::post('register', [TeacherAuthController::class, 'register']);
     Route::post('login', [TeacherAuthController::class, 'login']);
     Route::middleware(['auth:teacher-api', 'role:teacher'])->group(function () {
-
+        Route::post('update-user-info',[TeacherAuthController::class, 'updateUserInfo']);
+        Route::resource('question',QuestionController::class);
     });
 });
 Route::prefix('student')->group(function () {

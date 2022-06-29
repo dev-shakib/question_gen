@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('institute', function (Blueprint $table) {
             $table->id();
             $table->text('name');
-            $table->text('eiin');
+            $table->text('eiin')->nullable();
             $table->timestamps();
         });
     }

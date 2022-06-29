@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('question_year', function (Blueprint $table) {
+        Schema::create('question_options', function (Blueprint $table) {
             $table->id();
-            $table->text('year');
+            $table->text('name');
+            $table->unsignedBigInteger('qus_id');
+            $table->foreign('qus_id')->references('id')->on('questions');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('question_year');
+        Schema::dropIfExists('question_options');
     }
 };

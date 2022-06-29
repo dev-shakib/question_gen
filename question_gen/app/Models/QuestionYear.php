@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BoardYear extends Model
+class QuestionYear extends Model
 {
     use HasFactory;
-    protected $table = 'board_year';
+    protected $table = 'question_year';
     protected $fillable = ['year'];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+
+    ];
 }

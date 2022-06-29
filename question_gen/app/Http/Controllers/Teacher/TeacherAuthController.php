@@ -72,18 +72,61 @@ class TeacherAuthController extends Controller
             ], 401);
         }
     }
+    public function updateUserInfo(Request $request)
+    {
+        $input = $request->only(['image', 'lastname','address','phone']);
+
+        $validate_data = [
+            'image' => 'required|mimes:jpg,jpeg,png,bmp,tiff |max:4096',
+            'lastname' => 'required|min:3',
+            'address' => 'required|min:3',
+            'phone' => 'required|min:6|max:20',
+        ];
+        $messages = [
+            'mimes' => 'Please insert image only',
+            'max'   => 'Image should be less than 4 MB',
+            'address.required' => 'Address Required',
+            'phone.required' => 'Phone Number Required',
+            'lastname.required' => 'Last Name Required',
+
+        ];
+        $validator = Validator::make($input, $validate_data,$messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please see errors parameter for all errors.',
+                'errors' => $validator->errors()
+            ]);
+        }
+        if(request()->file('image')){
+            $file= request()->file('image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('public/teacher'), $filename);
+        }
+        $data = [
+            'lastname' => $request->lastname,
+            'phone' => $request->phone,
+            'image' => $filename,
+            'address' => $request->address,
+        ];
+        $user = User::where('id',auth()->user()->id)->update($data);
+        return response()->json([
+            'success'=>true,
+            'message'=> 'Updated',
+            'Data'=>$data
+        ]);
+    }
     public function register(Request $request)
     {
 
-        $input = $request->only(['firstname','lastname', 'username','email','password','phone','address','image']);
+        $input = $request->only(['firstname', 'username','email','password']);
 
         $validate_data = [
             'firstname' => 'required|string|min:3',
-            'lastname' => 'required|string|min:3',
             'username' => 'required|unique:users|min:3',
             'email' => 'required|unique:users|min:3',
             'password' => 'required|min:6|max:20',
-            'phone' => 'required|min:3',
         ];
 
         $validator = Validator::make($input, $validate_data);
@@ -97,20 +140,20 @@ class TeacherAuthController extends Controller
         }
 
         $User_role = Role::where(['name'=>'teacher'])->first();
-        if(request()->file('image')){
-            $file= request()->file('image');
-            $filename= date('YmdHi').$file->getClientOriginalName();
-            $file-> move(public_path('public/teacher'), $filename);
-        }
+        // if(request()->file('image')){
+        //     $file= request()->file('image');
+        //     $filename= date('YmdHi').$file->getClientOriginalName();
+        //     $file-> move(public_path('public/teacher'), $filename);
+        // }
         $teacher = User::create([
             'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
+            'lastname' => "",
             'username' => $request['username'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            'phone' => $request['phone'],
-            'image' => $filename,
-            'address' => $request['address'],
+            'phone' => "",
+            'image' => "",
+            'address' => "",
         ]);
         $teacher->attachRole($User_role);
         $accessToken = $teacher->createToken('authToken')->accessToken;

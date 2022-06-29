@@ -24,15 +24,13 @@ class InstituteRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'eiin' => 'required'
+            'name' => 'required|max:255'
         ];
     }
     public function messages()
     {
         return [
             'name.required' => 'A Institute Name is required',
-            'eiin.required' => 'A Institute EIIN is required',
 
         ];
     }
