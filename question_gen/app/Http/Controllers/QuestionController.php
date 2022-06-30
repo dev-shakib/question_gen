@@ -124,9 +124,71 @@ class QuestionController extends Controller
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request, $id)
     {
-        //
+        $question = Question::where('id',$id)->first();
+        $input = $request->only(['ques_type', 'question','subject','status','class','institute','board','ques_year']);
+
+        $validate_data = [
+            'ques_type' => 'required',
+            'question' => 'required|min:3',
+            'subject' => 'required|min:3',
+            'status' => 'required',
+            'class' => 'required',
+            'institute' => 'required',
+            'board' => 'required',
+            'ques_year' => 'required',
+        ];
+
+        $validator = Validator::make($input, $validate_data);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please see errors parameter for all errors.',
+                'errors' => $validator->errors()
+            ]);
+        }
+        $ins = Institute::where('name',$input['institute']);
+        if($ins->count() > 0){
+            $ins = $ins->first();
+            $input['institute'] = $ins->id;
+        }else{
+            $ins = Institute::create(['name'=>$input['institute']]);
+            $input['institute'] = $ins->id;
+        }
+        $sub = Subject::where('name',$input['subject']);
+        if($sub->count() > 0){
+            $sub = $sub->first();
+            $input['subject'] = $sub->id;
+        }else{
+            $sub = Subject::create(['name'=>$input['subject']]);
+            $input['subject'] = $sub->id;
+        }
+
+        Question::where('id',$id)->update($input);
+        $question->options()->delete();
+        $question->answer()->delete();
+        // $ques = Question::create($input);
+
+        $options =$request->options;
+        for($i=0;$i<count($options);$i++){
+            QuestionOption::create(['name'=>$options[$i],'qus_id'=>$question->id]);
+        }
+        $answer =$request->answer;
+        for($i=0;$i<count($answer);$i++){
+            QuestionAnswer::create(['name'=>$answer[$i],'qus_id'=>$question->id]);
+        }
+
+        $qus = Question::with(['options','answer','class','institute','board','ques_year','subject'])->where('id',$question->id)->first();
+
+
+
+        return response()->json([
+            'success'=>true,
+            'msg' => "UPDATED",
+            'data'=>$qus
+        ]);
     }
 
     /**

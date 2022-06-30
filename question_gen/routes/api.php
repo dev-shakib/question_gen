@@ -84,6 +84,7 @@ Route::prefix('teacher')->group(function () {
     Route::middleware(['auth:teacher-api', 'role:teacher'])->group(function () {
         Route::post('update-user-info',[TeacherAuthController::class, 'updateUserInfo']);
         Route::resource('question',QuestionController::class);
+        Route::post('question/{id}',[QuestionController::class, 'update']);
     });
 });
 Route::prefix('student')->group(function () {
