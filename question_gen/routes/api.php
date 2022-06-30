@@ -10,6 +10,7 @@ use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\GenerateQuestionController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Teacher\TeacherAuthController;
 use App\Http\Controllers\Student\StudentAuthController;
@@ -85,6 +86,8 @@ Route::prefix('teacher')->group(function () {
         Route::post('update-user-info',[TeacherAuthController::class, 'updateUserInfo']);
         Route::resource('question',QuestionController::class);
         Route::post('question/{id}',[QuestionController::class, 'update']);
+        Route::resource('generate-question',GenerateQuestionController::class);
+        Route::post('generate-question/{id}',[GenerateQuestionController::class, 'update']);
     });
 });
 Route::prefix('student')->group(function () {
