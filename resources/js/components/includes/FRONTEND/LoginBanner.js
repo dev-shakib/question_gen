@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 function LoginBanner() {
     return (
         <section class="d-flex align-center h-100vh">
