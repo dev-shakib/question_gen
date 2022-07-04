@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Question;
+use App\Http\Controllers\Controller;
+use App\Models\CustomQuestion;
 use Illuminate\Http\Request;
-use App\Models\QuestionAnswer;
-use App\Models\QuestionOption;
+use App\Models\CustomQuestionAnswer;
+use App\Models\CustomQuestionOption;
 use App\Models\Institute;
 use App\Models\Subject;
 use Validator;
-use Exception;
-class QuestionController extends Controller
+
+class CustomQuestionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $qus = Question::with(['options','answer','class','institute','board','ques_year','subject'])->get();
+
+        $qus = CustomQuestion::with(['options','answer','class','institute','board','ques_year','subject'])->get();
 
         return response()->json([
             'success'=>true,
@@ -36,10 +33,9 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['ques_type', 'question','subject','status','class','institute','board','ques_year']);
+        $input = $request->only([ 'question','subject','status','class','institute','board','ques_year','marks','ques_limit','time','instructions']);
 
         $validate_data = [
-            'ques_type' => 'required',
             'question' => 'required|min:3',
             'subject' => 'required|min:3',
             'status' => 'required',
@@ -47,6 +43,10 @@ class QuestionController extends Controller
             'institute' => 'required',
             'board' => 'required',
             'ques_year' => 'required',
+            'marks' => 'required',
+            'ques_limit' => 'required',
+            'instructions' => 'required',
+            'time' => 'required',
         ];
 
         $validator = Validator::make($input, $validate_data);
@@ -74,18 +74,18 @@ class QuestionController extends Controller
             $sub = Subject::create(['name'=>$input['subject']]);
             $input['subject'] = $sub->id;
         }
-        $ques = Question::create($input);
+        $ques = CustomQuestion::create($input);
 
         $options =$request->options;
         for($i=0;$i<count($options);$i++){
-            QuestionOption::create(['name'=>$options[$i],'qus_id'=>$ques->id]);
+            CustomQuestionOption::create(['name'=>$options[$i],'qus_id'=>$ques->id]);
         }
         $answer =$request->answer;
         for($i=0;$i<count($answer);$i++){
-            QuestionAnswer::create(['name'=>$answer[$i],'qus_id'=>$ques->id]);
+            CustomQuestionAnswer::create(['name'=>$answer[$i],'qus_id'=>$ques->id]);
         }
 
-        $qus = Question::with(['options','answer','class','institute','board','ques_year','subject'])->where('id',$ques->id)->first();
+        $qus = CustomQuestion::with(['options','answer','class','institute','board','ques_year','subject'])->where('id',$ques->id)->first();
 
         return response()->json([
             'success'=>true,
@@ -96,13 +96,28 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\CustomQuestion  $question
      * @return \Illuminate\Http\Response
      */
-
+    public function updateStatus($id,$status)
+    {
+        $datas = CustomQuestion::where('id',$id)->count();
+        if($datas == 0){
+            return response()->json([
+                'success'=>false,
+                'message'=> "NO DATA FOUND"
+            ]);
+        }
+        CustomQuestion::where('id',$id)->update(['isactive'=>$status]);
+        $data = CustomQuestion::with(['options','answer','class','institute','board','ques_year','subject'])->where('id',$id)->first();
+        return response()->json([
+            'success'=>true,
+            'data'=>$data
+        ]);
+    }
     public function show($id)
     {
-        $question = Question::with(['options','answer','class','institute','board','ques_year','subject'])->where("id",$id);
+        $question = CustomQuestion::with(['options','answer','class','institute','board','ques_year','subject'])->where("id",$id);
         if($question->count() > 0){
             $question = $question->first();
             return response()->json([
@@ -122,16 +137,15 @@ class QuestionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\CustomQuestion  $question
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $question = Question::where('id',$id)->first();
-        $input = $request->only(['ques_type', 'question','subject','status','class','institute','board','ques_year']);
+        $question = CustomQuestion::where('id',$id)->first();
+        $input = $request->only([ 'question','subject','status','class','institute','board','ques_year','marks','ques_limit','time','instructions']);
 
-        $validate_data = [
-            'ques_type' => 'required',
+        $validate_data =  [
             'question' => 'required|min:3',
             'subject' => 'required|min:3',
             'status' => 'required',
@@ -139,6 +153,9 @@ class QuestionController extends Controller
             'institute' => 'required',
             'board' => 'required',
             'ques_year' => 'required',
+            'marks' => 'required',
+            'ques_limit' => 'required',
+            'instructions' => 'required',
         ];
 
         $validator = Validator::make($input, $validate_data);
@@ -167,21 +184,21 @@ class QuestionController extends Controller
             $input['subject'] = $sub->id;
         }
 
-        Question::where('id',$id)->update($input);
+        CustomQuestion::where('id',$id)->update($input);
         $question->options()->delete();
         $question->answer()->delete();
-        // $ques = Question::create($input);
+        // $ques = CustomQuestion::create($input);
 
         $options =$request->options;
         for($i=0;$i<count($options);$i++){
-            QuestionOption::create(['name'=>$options[$i],'qus_id'=>$question->id]);
+            CustomQuestionOption::create(['name'=>$options[$i],'qus_id'=>$question->id]);
         }
         $answer =$request->answer;
         for($i=0;$i<count($answer);$i++){
-            QuestionAnswer::create(['name'=>$answer[$i],'qus_id'=>$question->id]);
+            CustomQuestionAnswer::create(['name'=>$answer[$i],'qus_id'=>$question->id]);
         }
 
-        $qus = Question::with(['options','answer','class','institute','board','ques_year','subject'])->where('id',$question->id)->first();
+        $qus = CustomQuestion::with(['options','answer','class','institute','board','ques_year','subject'])->where('id',$question->id)->first();
 
 
 
@@ -195,12 +212,12 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\CustomQuestion  $question
      * @return \Illuminate\Http\Response
      */
     public function destroy( $id)
     {
-        $question = Question::where("id",$id);
+        $question = CustomQuestion::where("id",$id);
         if($question->count() > 0){
             $question = $question->first();
             $question->answer()->delete();

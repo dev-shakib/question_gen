@@ -104,6 +104,22 @@ class GenerateQuestionController extends Controller
             'data'=>$datas
         ]);
     }
+    public function updateStatus($id,$status)
+    {
+        $datas = GenerateQuestion::where('id',$id)->count();
+        if($datas == 0){
+            return response()->json([
+                'success'=>false,
+                'message'=> "NO DATA FOUND"
+            ]);
+        }
+        GenerateQuestion::where('id',$id)->update(['isactive'=>$status]);
+        $data = GenerateQuestion::where('id',$id)->first();
+        return response()->json([
+            'success'=>true,
+            'data'=>$data
+        ]);
+    }
     public function show($id){
         $datas = GenerateQuestion::where('id',$id);
         if($datas->count() == 0)

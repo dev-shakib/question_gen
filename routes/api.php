@@ -11,6 +11,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\GenerateQuestionController;
+use App\Http\Controllers\CustomQuestionController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Teacher\TeacherAuthController;
 use App\Http\Controllers\Student\StudentAuthController;
@@ -88,6 +89,10 @@ Route::prefix('teacher')->group(function () {
         Route::post('question/{id}',[QuestionController::class, 'update']);
         Route::resource('generate-question',GenerateQuestionController::class);
         Route::post('generate-question/{id}',[GenerateQuestionController::class, 'update']);
+        Route::get('generate-question/{id}/status/{active_number}',[GenerateQuestionController::class, 'updateStatus']);
+        Route::resource('custom-question',CustomQuestionController::class);
+        Route::post('custom-question/{id}',[CustomQuestionController::class, 'update']);
+        Route::get('custom-question/{id}/status/{active_number}',[CustomQuestionController::class, 'updateStatus']);
     });
 });
 Route::prefix('student')->group(function () {
