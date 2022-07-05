@@ -7,11 +7,9 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/node_modules
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
 ngrok.exe
 
 *.exe
