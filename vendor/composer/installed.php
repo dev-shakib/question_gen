@@ -1,12 +1,12 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-develop',
-    'version' => 'dev-develop',
+    'pretty_version' => 'dev-main',
+    'version' => 'dev-main',
     'aliases' => 
     array (
     ),
-    'reference' => 'e69b2fe67cf0a5b72b28a094f166421177e21a55',
+    'reference' => '68eb88cba746fa345b09e9a9039cf3dfe986d391',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -447,12 +447,12 @@
     ),
     'laravel/laravel' => 
     array (
-      'pretty_version' => 'dev-develop',
-      'version' => 'dev-develop',
+      'pretty_version' => 'dev-main',
+      'version' => 'dev-main',
       'aliases' => 
       array (
       ),
-      'reference' => 'e69b2fe67cf0a5b72b28a094f166421177e21a55',
+      'reference' => '68eb88cba746fa345b09e9a9039cf3dfe986d391',
     ),
     'laravel/passport' => 
     array (
