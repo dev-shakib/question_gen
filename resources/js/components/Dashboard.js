@@ -12,6 +12,8 @@ function Dashboard() {
 
                 <section class="content pt-5" >
                     <AddQuestion />
+                    
+                    
                 </section>
 
             </div>
